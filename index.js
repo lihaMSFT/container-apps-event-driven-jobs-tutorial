@@ -11,7 +11,7 @@ async function main() {
     // 1. Dequeue one message from the queue
     const response = await queueClient.receiveMessages({
         numberOfMessages: 1,
-        visibilityTimeout: 60, // set this to longer than the expected processing time (in seconds)
+        visibilityTimeout: 180, // set this to longer than the expected processing time (in seconds)
     });
 
     if (response.receivedMessageItems.length === 0) {
@@ -23,6 +23,7 @@ async function main() {
     console.log(`Processing message: ${message.messageText}`);
 
     // 2. Process the message here
+    await new Promise(resolve => setTimeout(resolve, 120000));
 
     // 3. Delete the message from the queue
     await queueClient.deleteMessage(message.messageId, message.popReceipt);
@@ -30,7 +31,6 @@ async function main() {
 
     // 4. Exit
 
-    await new Promise(resolve => setTimeout(resolve, 120000));
 }
 
 main();
