@@ -18,13 +18,19 @@ async function main() {
         console.log("No message received. Exiting...");
         return;
     }
-    await queueClient.deleteMessage(message.messageId, message.popReceipt);
-
-    // sleep for 2 minutes
-    await new Promise(resolve => setTimeout(resolve, 120000));
 
     const message = response.receivedMessageItems[0];
-    console.log(`Processed message: ${message.messageText}`);
+    console.log(`Processing message: ${message.messageText}`);
+
+    // 2. Process the message here
+
+    // 3. Delete the message from the queue
+    await queueClient.deleteMessage(message.messageId, message.popReceipt);
+    console.log("Message processed");
+
+    // 4. Exit
+
+    await new Promise(resolve => setTimeout(resolve, 120000));
 }
 
 main();
